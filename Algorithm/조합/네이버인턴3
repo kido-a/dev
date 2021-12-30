@@ -1,0 +1,83 @@
+package com.ssafy.test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Main3 {
+	static int min = Integer.MAX_VALUE;
+	public static void main(String[] args) {
+		int[] prices = {1,8,1,8,1,8};
+		int d = 6;
+		int k = 4;
+		
+		Arrays.sort(prices);
+		
+		if(prices[prices.length-1] - prices[0] <=d)
+		{
+			int sum=0;
+			for(int i=0;i<prices.length;i++)
+			{
+				sum += prices[i];
+			}
+			System.out.println(sum/prices.length);
+		}
+		else if(prices[prices.length-1-1] - prices[1] <=d)
+		{
+			int sum=0;
+			for(int i=0;i<prices.length;i++)
+			{
+				sum += prices[i];
+			}
+			System.out.println(sum/prices.length);
+		}
+		else if(check(prices,d,k))
+		{
+			System.out.println(min);
+		}
+		else
+		{
+			int result;
+			if(prices.length%2==0)
+			{
+				result = Integer.min(prices[prices.length/2], prices[prices.length/2-1]);
+			}
+			else
+			{
+				result = prices[prices.length/2];
+			}
+			System.out.println(result);
+		}
+
+	}
+
+	private static boolean check(int[] prices, int d, int k) {
+		combination(prices,0,new int[k],0,d);
+//		System.out.println(min);
+		if(min == Integer.MAX_VALUE)
+			return false;
+		return true;
+	}
+
+	private static void combination(int[] prices, int k, int[] sel,int idx, int d) {
+		if(sel.length == k)
+		{
+			int dis = sel[sel.length-1]-sel[0];
+			if(dis <=d)
+			{
+//				System.out.println(Arrays.toString(sel));
+				int average = (sel[sel.length-1]+sel[0])/2;
+				min = Integer.min(min, average);
+//				System.out.println("최소평균 "+min);
+			}
+			return;
+		}
+		
+		for(int i=idx;i<prices.length;i++)
+		{
+			sel[k] = prices[i];
+			combination(prices,k+1,sel,i+1,d);
+		}
+		
+	}
+
+}
