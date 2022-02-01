@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.plaf.synth.SynthSplitPaneUI;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int X = sc.nextInt();
+		int K = sc.nextInt();
+		ArrayList<Integer> q = new ArrayList();
+		ArrayList<Integer> child = new ArrayList();
+		ArrayList<Integer> result = new ArrayList();
+        boolean[] visit = new boolean[1000001];
+		q.add(X);
+		child.add(-2);
+		int idx = 0;
+
+		if (K <= X) {
+			System.out.println(X - K);
+			for (int i = X; i >= K; i--) {
+				System.out.print(i + " ");
+			}
+		} else {
+			while (true) {
+				int item = q.get(idx);
+                visit[item] = true;
+				if (!visit[item*2] && item * 2 < 100001) {
+					q.add(item * 2);
+					child.add(item);
+					if (item * 2 == K) {
+						break;
+					}
+				}
+				if (item - 1 >= 0 && !visit[item-1]) {
+					q.add(item - 1);
+					child.add(item);
+					if (item - 1 == K) {
+						break;
+					}
+				}
+				if (!visit[item+1] && item + 1 < 100001) {
+					q.add(item + 1);
+					child.add(item);
+					if (item + 1 == K) {
+						break;
+					}
+				}
+
+				idx++;
+			}
+//		System.out.println(q);
+//		System.out.println(child);
+			int index = q.size() - 1;
+			result.add(q.get(index));
+
+			while (true) {
+				if (q.get(index) == X)
+					break;
+				result.add(child.get(index));
+				index = q.indexOf(child.get(index));
+			}
+			System.out.println(result.size()-1);
+			for (int i = result.size() - 1; i >= 0; i--) {
+				System.out.print(result.get(i) + " ");
+			}
+		}
+	}
+
+}
